@@ -1,0 +1,32 @@
+require 'autotest/restart'
+require 'autotest/growl'
+module Autotest::Growl
+
+  self.hide_label = true
+  self.clear_terminal = false
+  #self.show_modified_files = true
+
+  def self.growl(title, message, icon, priority=0, stick="")
+    growl = File.join(GEM_PATH, 'growl', 'growlnotify')
+    image = File.join(@@image_dir, "#{icon}.png")
+    #system %(notify-send "#{title}" "#{message}" -i #{image} -t 1)
+    options = "-u 800 -o 100 -n 28 -p 7 -x 0 -y -50 -B black -r 155 -b 155 -d 30 -l 3 -a 3"
+    if message =~ /fail/
+      options += " -R red"
+      title = "FAIL"
+    elsif message =~ /examples/
+      options += " -R green"
+      title = "PASS"
+    end
+    system %( echo "#{title} - #{message}" | aosd_cat #{options} )
+  end
+
+
+  Autotest.add_hook :initialize do |autotest|
+    %w{.git .svn .hg .DS_Store ._* vendor tmp log doc}.each do |exception|
+      autotest.add_exception(exception)
+    end
+  end
+
+end
+
