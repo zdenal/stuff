@@ -6,6 +6,8 @@ for me.
 Rewrite show message method (growl), because in Ubuntu is set default delay to 8
 seconds with notify-send(use notifyOSD), what slowdown deploy.
 
+aosd_cat package is requested in Linux.
+
     def self.growl(title, message, icon, priority=0, stick="")
     growl = File.join(GEM_PATH, 'growl', 'growlnotify')
     image = File.join(@@image_dir, "#{icon}.png")
